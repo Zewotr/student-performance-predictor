@@ -1,14 +1,29 @@
+from cairo import Path
 import streamlit as st
 import pandas as pd
 import joblib
 
 # Load model + features
-model = joblib.load("../student-performance-predictor/models/model.pkl")
-features = joblib.load("../student-performance-predictor/models/features.pkl")
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / ".."/"student-performance-predictor" / "models" / "model.pkl"
+model = joblib.load(MODEL_PATH)
+
+FEATURE_PATH = BASE_DIR / ".."/"student-performance-predictor" / "models" / "features.pkl"
+features = joblib.load(FEATURE_PATH)
 
 st.title("🎓 Student Performance Predictor")
 
 st.write("Enter student details:")
+
+importance = model.feature_importances_
+feat_df = pd.DataFrame({
+    "Feature": features,
+    "Importance": importance
+}).sort_values(by="Importance", ascending=False)
+
+st.subheader("Top Features")
+st.bar_chart(feat_df.set_index("Feature").head(10))
+
 
 # ---- SIMPLE INPUTS (you can expand later) ----
 with st.sidebar:
@@ -54,8 +69,6 @@ if st.button("Predict"):
     prediction = model.predict(input_data)
     st.success(f"Predicted Score: {prediction[0]:.2f}")
 
-
-import pandas as pd
 
 importance = model.feature_importances_
 feat_df = pd.DataFrame({
