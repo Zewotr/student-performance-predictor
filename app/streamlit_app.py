@@ -5,10 +5,10 @@ import joblib
 
 # Load model + features
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / ".."/"student-performance-predictor" / "models" / "model.pkl"
+MODEL_PATH = BASE_DIR / ".."/ "models" / "model.pkl"
 model = joblib.load(MODEL_PATH)
 
-FEATURE_PATH = BASE_DIR / ".."/"student-performance-predictor" / "models" / "features.pkl"
+FEATURE_PATH = BASE_DIR / ".."/ "models" / "features.pkl"
 features = joblib.load(FEATURE_PATH)
 
 st.title("🎓 Student Performance Predictor")
